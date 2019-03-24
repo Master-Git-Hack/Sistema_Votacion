@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "f035ee54efc4c4b5b4dc",
+    "revision": "6d9b04a99621a6c97e72",
     "url": "/Sistema_Votacion/static/css/main.25d2157d.chunk.css"
   },
   {
-    "revision": "f035ee54efc4c4b5b4dc",
-    "url": "/Sistema_Votacion/static/js/main.dd2cb2b4.chunk.js"
+    "revision": "6d9b04a99621a6c97e72",
+    "url": "/Sistema_Votacion/static/js/main.24605ed4.chunk.js"
   },
   {
     "revision": "05efe1642ccae9f36ce2",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/Sistema_Votacion/static/media/escudo.febcb7fb.png"
   },
   {
-    "revision": "12c391acbd9e4f62c5ffa322f5e4b759",
+    "revision": "db1c82bdf0aae6480aec9f5ecf64c949",
     "url": "/Sistema_Votacion/index.html"
   }
 ];
