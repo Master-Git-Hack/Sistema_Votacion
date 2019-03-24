@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/sistema_votacion/precache-manifest.a96e3a1a4a61b49b72e8f5fc76612858.js"
+  "/Sistema_Votacion/precache-manifest.0563ffcdb50a5f60a2ce80a50438e820.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/sistema_votacion/index.html", {
+workbox.routing.registerNavigationRoute("/Sistema_Votacion/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
