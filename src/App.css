@@ -1,33 +1,22 @@
-.App {
-  text-align: center;
+.loginSize
+{
+     max-width: 900px;
+     min-width: 200px;
 }
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.btn
+{
+    border-radius: 35px;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.form-control
+{
+    border-radius: 35px;
 }
-
-.App-link {
-  color: #61dafb;
+.table
+{
+    border-radius:15px;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.card,.card-header,.card-body
+{
+  border-radius: 15px;
+  border-bottom:15px; 
 }
