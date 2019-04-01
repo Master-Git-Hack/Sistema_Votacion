@@ -1,14 +1,16 @@
 {
-  "main.css": "/Sistema_Votacion/static/css/main.6e5b298f.chunk.css",
-  "main.js": "/Sistema_Votacion/static/js/main.d360afe0.chunk.js",
-  "main.js.map": "/Sistema_Votacion/static/js/main.d360afe0.chunk.js.map",
+  "main.css": "/Sistema_Votacion/static/css/main.a7de92a2.chunk.css",
+  "main.js": "/Sistema_Votacion/static/js/main.009a1184.chunk.js",
+  "main.js.map": "/Sistema_Votacion/static/js/main.009a1184.chunk.js.map",
   "runtime~main.js": "/Sistema_Votacion/static/js/runtime~main.0433a759.js",
   "runtime~main.js.map": "/Sistema_Votacion/static/js/runtime~main.0433a759.js.map",
-  "static/js/2.15a3858f.chunk.js": "/Sistema_Votacion/static/js/2.15a3858f.chunk.js",
-  "static/js/2.15a3858f.chunk.js.map": "/Sistema_Votacion/static/js/2.15a3858f.chunk.js.map",
+  "static/js/2.5ea6a586.chunk.js": "/Sistema_Votacion/static/js/2.5ea6a586.chunk.js",
+  "static/js/2.5ea6a586.chunk.js.map": "/Sistema_Votacion/static/js/2.5ea6a586.chunk.js.map",
   "index.html": "/Sistema_Votacion/index.html",
-  "precache-manifest.602a10f4dcec0c6a9e67f8a87b28e657.js": "/Sistema_Votacion/precache-manifest.602a10f4dcec0c6a9e67f8a87b28e657.js",
+  "precache-manifest.c5d1660186d2cc50e67ac9e73f7f68cf.js": "/Sistema_Votacion/precache-manifest.c5d1660186d2cc50e67ac9e73f7f68cf.js",
   "service-worker.js": "/Sistema_Votacion/service-worker.js",
-  "static/css/main.6e5b298f.chunk.css.map": "/Sistema_Votacion/static/css/main.6e5b298f.chunk.css.map",
-  "static/media/escudo.png": "/Sistema_Votacion/static/media/escudo.febcb7fb.png"
+  "static/css/main.a7de92a2.chunk.css.map": "/Sistema_Votacion/static/css/main.a7de92a2.chunk.css.map",
+  "static/media/escudo.png": "/Sistema_Votacion/static/media/escudo.febcb7fb.png",
+  "static/media/gto.png": "/Sistema_Votacion/static/media/gto.b9ad320f.png",
+  "static/media/tec.png": "/Sistema_Votacion/static/media/tec.23f8d32b.png"
 }
