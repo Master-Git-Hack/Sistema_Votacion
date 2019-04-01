@@ -50,7 +50,7 @@ class AddStudent extends Component
     {   //primero hay que validar que el campo usuario no este vacio
         if(String(this.state.Numero_Control)!=='')
         {   
-            if(this.state.Numero_Control.length() === 8)
+            if(this.state.Numero_Control.length === 7)
                 //segundo comprobamos que el numero de control sea un numero
                 if(Number(this.state.Numero_Control))
                 {   /**
@@ -67,7 +67,15 @@ class AddStudent extends Component
                         */
                         if(String(this.state.Numero_Control).substr(2,3) ==='111')
                             return true;
+                        else
+                            return false;
+                    else
+                        return false;
                 }
+                else
+                    return false;
+            else
+                return false;
         }
         else
             return false;
