@@ -49,23 +49,25 @@ class AddStudent extends Component
     checkNumero_Control()
     {   //primero hay que validar que el campo usuario no este vacio
         if(String(this.state.Numero_Control)!=='')
-        {   //segundo comprobamos que el numero de control sea un numero
-            if(Number(this.state.Numero_Control))
-            {   /**
-                creamos una variable fecha para validar los usuarios activos puedan registrarse
-                obtenemos la fecha en cuatro digitos yyyy y lo casteamos a numero y eliminamos la fecha completa
-                    para obtener solo los 2 ultimos digitos yy
-                */
-                var fecha = Number(new Date().getFullYear())-2000;
-                //comprobamos que el numero de control sea mayor al año (yy-5)111000  y menor a (yy)111000
-                if(this.state.Numero_Control>Number((fecha-5)+"111000") && this.state.Numero_Control<Number((fecha)+"111000"))
-                    /**
-                    validamos que entre el numero de control tenga los 3 digitos de identificacion de la institucion
-                        ejemplo 15111007 -> valido, 15222007 -> invalido
+        {   
+            if(this.state.Numero_Control.length() === 8)
+                //segundo comprobamos que el numero de control sea un numero
+                if(Number(this.state.Numero_Control))
+                {   /**
+                    creamos una variable fecha para validar los usuarios activos puedan registrarse
+                    obtenemos la fecha en cuatro digitos yyyy y lo casteamos a numero y eliminamos la fecha completa
+                        para obtener solo los 2 ultimos digitos yy
                     */
-                    if(String(this.state.Numero_Control).substr(2,3) ==='111')
-                        return true;
-            }
+                    var fecha = Number(new Date().getFullYear())-2000;
+                    //comprobamos que el numero de control sea mayor al año (yy-5)111000  y menor a (yy)111000
+                    if(this.state.Numero_Control>Number((fecha-5)+"111000") && this.state.Numero_Control<Number((fecha)+"111000"))
+                        /**
+                        validamos que entre el numero de control tenga los 3 digitos de identificacion de la institucion
+                            ejemplo 15111007 -> valido, 15222007 -> invalido
+                        */
+                        if(String(this.state.Numero_Control).substr(2,3) ==='111')
+                            return true;
+                }
         }
         else
             return false;
