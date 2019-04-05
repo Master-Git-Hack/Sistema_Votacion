@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import fire from './../../Config/Config';
 import Login from './../Login/Login';
+import {Collapse} from 'react-bootstrap';
 class AddStudent extends Component
 {
     constructor()
@@ -24,7 +25,7 @@ class AddStudent extends Component
             Carrera:'Ing. Sistemas Computacionales',
             Contraseña:'',
             errores:[],
-            status_errorSumary:'card d-none',
+            status_errorSumary:false,
             statusView:true
         }
         //asignacion de funciones para no perder el scope
@@ -123,15 +124,12 @@ class AddStudent extends Component
                 listErrors.push('Las constraseñas deben coincidir');
             //verificamos el tamaño del arreglo para los errores
             if(listErrors.length>0)
-                {
                     /**
                      si es mayor a 0, es decir se encontro un arreglo,
                      agregamos el arreglo al estado en la variable errores
                      y cambiamos el atributo de visibilidad para mostrar los errores
                      */
-                    this.setState({errores:listErrors});
-                    this.setState({status_errorSumary:'card'});
-                }
+                this.setState({errores:listErrors,status_errorSumary:true});
             else
                 //en caso de no tener ningun error en la lista pasamos al registro
                this.newStudent();              
@@ -320,7 +318,8 @@ class AddStudent extends Component
                                     </tr>
                                 </tbody>
                             </table>
-                                <div className={this.state.status_errorSumary}>
+                                <Collapse in={this.state.status_errorSumary}>
+                                <div className="card">
                                         <div className="card-header">
                                             <h4 className="text-primary">Errores</h4>
                                         </div>
@@ -335,6 +334,7 @@ class AddStudent extends Component
                                                 </ol>
                                             </div> 
                                     </div>
+                                </Collapse>
                         </div>
                     </div>
                 </div>    

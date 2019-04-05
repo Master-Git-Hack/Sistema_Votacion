@@ -5,7 +5,6 @@ import LogoItesg from './../../Resources/escudo.png';
 import LogoTec from '../../Resources/tec.png';
 import LogoGto from '../../Resources/gto.png';
 
-
 class Login extends Component
 {
     constructor()
@@ -104,6 +103,7 @@ class Login extends Component
                         <img src={LogoGto} alt="logo" className="img-responsive" width="100px"/>
                         </div>
                     </div>
+                    
                 </div>
                 :<AddStudent/>}
             </div>

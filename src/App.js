@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import fire from './Config/Config';
 import Login from './Components/Login/Login';
-import Home from './Components/Home/Home';
-import NavBar from './Components/NavBar/NavBar';
+import Navigation from './Components/NavBar/Navigation/Navigation';
 
 class App extends Component {
   constructor()
@@ -12,24 +11,34 @@ class App extends Component {
     this.state=
     {
       user:'',
+      Nombre:'',
+      typeUsr:true
     }
-    this.logOut=this.logOut.bind(this);
+    this.getName=this.getName.bind(this);
+  }
+  getName()
+  {
+      var num_ctrl=fire.auth().currentUser.email
+      fire.database().ref('Estudiante/'+num_ctrl.substr(0,8)).on("value",snapshot=>{
+        this.setState({Nombre:snapshot.val().Nombre});
+      })
   }
   componentDidMount()
   {
     this.authListener();
   }
-  logOut()
-  {
-    fire.auth().signOut();
-  }
   authListener()
   {
     fire.auth().onAuthStateChanged((user)=>
     {
-      
       if(user)
-        this.setState({user});
+         {
+          this.setState({user});
+          if(fire.auth().currentUser.email.substr(0,8)!== "superusr") 
+            this.getName();
+          else
+             this.setState({Nombre:"SuperUser",typeUsr:true});
+         }
       else
         this.setState({user:null});
     });
@@ -38,10 +47,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <NavBar>
-          <button type="submit" name="Participant" onClick={this.logOut} className="btn nav-link bg-danger text-light">Log Out</button>
-        </NavBar>
-        { this.state.user ? <Home Numero_Control={fire.auth().currentUser.email}/> : <Login/>}
+        { this.state.user ? <Navigation Numero_Control={fire.auth().currentUser.email} Nombre={this.state.Nombre} typeUsr={this.state.typeUsr}/> : <Login/>}
       </div>
     );
   }

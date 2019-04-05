@@ -163,7 +163,7 @@ class AddContest extends Component
                             </tr>
                             <tr>
                                 <td className="text-left">
-                                    <button type="submit" className="btn btn-danger">Cancelar</button>
+                                    
                                 </td>
                                 <td className="text-right">
                                     <button type="submit" onClick={this.addContest} className="btn btn-success">Guardar</button>

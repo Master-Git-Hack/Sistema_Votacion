@@ -1,6 +1,9 @@
 import React,{Component} from 'react';
-import UserPanel from './User/User';
 import PopUp from 'reactjs-popup';
+import {Navbar,Nav,NavDropdown,Container} from 'react-bootstrap';
+import Home from './../Home/Home';
+import User from './User/User'; 
+import fire from './../../Config/Config';
 
 class NavBar extends Component
 {
@@ -9,37 +12,36 @@ class NavBar extends Component
         super(props);
         this.state=
         {
-            user:'Einar Jhordany'
+            userVisibility:false
         }
     }
     render()
     {
         return(
-            <div className="navbar nabvar-dark bg-dark">
-                <div className="navbar-brand">
-                    <button type="submit" name="Home" onClick={this.componentStatus} className="btn nav-link text-light">Home</button>
-                </div>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <ul className="navbar nav">
-                    <li className="nav-item">
-                        {this.props.children}
-                    </li>
-                    <li className="nav-item dropdown ">
-                        <PopUp
-                            trigger=
-                            {
-                                <button 
-                                    className="btn nav-link dropdown-toggle text-light"
-                                >{this.state.user}</button>
-                            }
-                            children={
-                                <UserPanel/>
-                            }
-                        />
-                    </li>
-                </ul>
+            <div>
+                <Navbar variant="dark"bg="dark" fixed="top" expand="lg">
+                    <Navbar.Brand>Sistema de Votación</Navbar.Brand>
+                    <Navbar.Toggle className="btn" aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="mr-auto">
+                            {this.props.children}
+                        </Nav>
+                        <Nav>
+                            <NavDropdown title={this.props.Nombre}  id="basic-nav-dropdown"> 
+                                <Container className="text-center">
+                                    <button type="submit" onClick={()=>this.setState({userVisibility:!this.state.userVisibility})} className="btn btn-info">Información</button>
+                                    <NavDropdown.Divider />
+                                    <button 
+                                        type="submit" 
+                                        className="btn btn-danger"
+                                        onClick={()=>fire.auth().signOut()}    
+                                    >Cerrar Sesión</button>
+                                </Container>
+                            </NavDropdown>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar><br/>
+                {this.userVisibility ? <User />:null}
             </div>
         );
     }

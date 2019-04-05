@@ -1,21 +1,35 @@
 import React,{Component} from 'react';
 import fire from '../../../Config/Config';
-
+import {Container,Jumbotron,Table,Row,Col} from 'react-bootstrap';
 class User extends Component
 {
-    constructor()
+    constructor(props)
     {
         super();
+        
     }
     render()
     {
         return(
-            <div className="text-center">
-                <div className="btn-group-vertical">
-                <button type="submit" name="Participant" className="btn btn-light text-info">Mi Información</button>
-                <button type="submit" name="Participant" className="btn btn-light text-danger">Cerrar Sesión</button>
-                </div>
-            </div>
+           <Container className="text-center">
+               <Jumbotron className="center">
+                   <h2>Información Personal</h2> c
+                    <br/>
+                    <Table>
+                        <Row>
+                            <Col>Nombre(s):</Col>
+                            <Col>
+                                <input 
+                                    type="text" 
+                                    name="Nombre" 
+                                    placeholder="Nombre(s)"
+                                    className="form-control"
+                                />
+                            </Col>
+                        </Row>
+                    </Table>
+               </Jumbotron>
+           </Container>
         );
     }
 }
