@@ -1,19 +1,19 @@
 self.__precacheManifest = [
   {
-    "revision": "ec265153b4682ee3cf1d",
+    "revision": "674b9a6391be32c44258",
     "url": "/Sistema_Votacion/static/css/main.a7de92a2.chunk.css"
   },
   {
-    "revision": "ec265153b4682ee3cf1d",
-    "url": "/Sistema_Votacion/static/js/main.e0a18ff6.chunk.js"
+    "revision": "674b9a6391be32c44258",
+    "url": "/Sistema_Votacion/static/js/main.eca47abb.chunk.js"
   },
   {
     "revision": "05efe1642ccae9f36ce2",
     "url": "/Sistema_Votacion/static/js/runtime~main.0433a759.js"
   },
   {
-    "revision": "fa560cae32b85709d833",
-    "url": "/Sistema_Votacion/static/js/2.8011279d.chunk.js"
+    "revision": "5540506572465bd1a897",
+    "url": "/Sistema_Votacion/static/js/2.14fa4d12.chunk.js"
   },
   {
     "revision": "febcb7fb0017eae812865754fb130b40",
@@ -28,7 +28,7 @@ self.__precacheManifest = [
     "url": "/Sistema_Votacion/static/media/gto.b9ad320f.png"
   },
   {
-    "revision": "2a9bf495557a3ad8022c2815b6308210",
+    "revision": "9197a0a086b5a653828d07dae61ee550",
     "url": "/Sistema_Votacion/index.html"
   }
 ];
