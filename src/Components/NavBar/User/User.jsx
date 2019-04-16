@@ -5,7 +5,7 @@ class User extends Component
 {
     constructor(props)
     {
-        super();
+        super(props);
         
     }
     render()
@@ -13,7 +13,7 @@ class User extends Component
         return(
            <Container className="text-center">
                <Jumbotron className="center">
-                   <h2>Información Personal</h2> c
+                   <h2>Información Personal: {fire.auth().currentUser.email} </h2> c
                     <br/>
                     <Table>
                         <Row>
@@ -26,6 +26,53 @@ class User extends Component
                                     className="form-control"
                                 />
                             </Col>
+                        </Row>
+                        <Row>
+                            <Col>Nombre(s):</Col>
+                            <Col>
+                                <input 
+                                    type="text" 
+                                    name="Nombre" 
+                                    placeholder="Nombre(s)"
+                                    className="form-control"
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>Nombre(s):</Col>
+                            <Col>
+                                <input 
+                                    type="text" 
+                                    name="Nombre" 
+                                    placeholder="Nombre(s)"
+                                    className="form-control"
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>Nombre(s):</Col>
+                            <Col>
+                                <input 
+                                    type="text" 
+                                    name="Nombre" 
+                                    placeholder="Nombre(s)"
+                                    className="form-control"
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>Nombre(s):</Col>
+                            <Col>
+                                <input 
+                                    type="text" 
+                                    name="Nombre" 
+                                    placeholder="Nombre(s)"
+                                    className="form-control"
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            {this.props.children}
                         </Row>
                     </Table>
                </Jumbotron>

@@ -10,11 +10,8 @@ class NavBar extends Component
     constructor(props)
     {
         super(props);
-        this.state=
-        {
-            userVisibility:false
-        }
     }
+
     render()
     {
         return(
@@ -29,7 +26,14 @@ class NavBar extends Component
                         <Nav>
                             <NavDropdown title={this.props.Nombre}  id="basic-nav-dropdown"> 
                                 <Container className="text-center">
-                                    <button type="submit" onClick={()=>this.setState({userVisibility:!this.state.userVisibility})} className="btn btn-info">Información</button>
+                                    <PopUp
+                                        trigger={<button type="submit" className="btn btn-info">Información</button>}
+                                        modal
+                                        children={Close => 
+                                        <User>
+                                            <button type="submit" onClick={Close} className="btn btn-danger">Cancelar</button>
+                                        </User>}
+                                    />
                                     <NavDropdown.Divider />
                                     <button 
                                         type="submit" 
@@ -41,7 +45,6 @@ class NavBar extends Component
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar><br/>
-                {this.userVisibility ? <User />:null}
             </div>
         );
     }

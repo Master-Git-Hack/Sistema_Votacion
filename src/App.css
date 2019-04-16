@@ -36,3 +36,7 @@
     border-bottom-left-radius: 35px;
     border-bottom-right-radius: 35px;
 }
+.custom-file-input,.custom-file-label,.progress-bar,.row
+{
+    border-radius: 35px;
+}

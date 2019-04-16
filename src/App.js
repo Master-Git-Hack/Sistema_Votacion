@@ -12,7 +12,7 @@ class App extends Component {
     {
       user:'',
       Nombre:'',
-      typeUsr:true
+      typeUsr:false
     }
     this.getName=this.getName.bind(this);
   }

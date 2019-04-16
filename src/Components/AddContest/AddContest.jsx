@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 import fire from './../../Config/Config';
+import ContestRecords from './../ContestRecords/ContestRecords';
+import {Collapse} from 'react-bootstrap'
 class AddContest extends Component
 {
     constructor()
@@ -14,16 +16,25 @@ class AddContest extends Component
             Hora_Termino:'',
             Contraseña:'',
             statusPassword:false,
-            countEvents:0
+            countEvents:0,
+            Events:[],
+            Errors:[],
+            ErrorsSummary:false
         }
         this.handleChange=this.handleChange.bind(this);
         this.enablePassword=this.enablePassword.bind(this);
         this.addContest=this.addContest.bind(this);
+        this.checkContest=this.checkContest.bind(this);
+        this.checkErrors=this.chechErrors.bind(this);
+    }
+    componentDidMount()
+    {
+        this.loadContests();
     }
     enablePassword(e)
     {
         if(this.state.statusPassword === true)
-            this.setState({statusPassword:false});
+            this.setState({statusPassword:false,Contraseña:''});
         else
             this.setState({statusPassword:true});
     }
@@ -31,49 +42,104 @@ class AddContest extends Component
     { 
         this.setState({[e.target.name]:e.target.value});
     }
+    loadContests()
+    {
+        let {Events} = this.state;
+        fire.database().ref().child('Evento').on('child_added',snapshot=>{
+            Events.push({
+                Id:parseInt(snapshot.key),
+                Nombre_Votacion:snapshot.val().Nombre_Votacion,
+                Carrera:snapshot.val().Carrera,
+                Fecha_Inicio:snapshot.val().Fecha_Inicio,
+                Hora_Inicio:snapshot.val().Hora_Inicio,
+                Fecha_Termino:snapshot.val().Fecha_Termino,
+                Hora_Termino:snapshot.val().Hora_Termino,
+                Contraseña:snapshot.val().Contraseña
+            })
+        })
+        this.setState({Events});
+        
+        fire.database().ref().child('Evento').on('child_removed',snapshot=>{
+            for(let i=0;i<Events.length;i++)
+                if(Events[i].Id === snapshot.key)
+                    Events.splice(i,1)
+            this.setState({Events})
+        })
+        
+    }
+    chechErrors()
+    {
+        var Errors=[];
+        if(this.state.Nombre_Votacion === '')
+            Errors.push("El Nombre del evento no puede qudar vacio.")
+        else if (this.checkContest())
+            Errors.push("No puedes repetir el nombre del evento")
+        if(this.state.Fecha_Inicio ==='')
+            Errors.push("El Fecha de Inicio del evento no puede qudar vacio.")
+        if(this.state.Hora_Inicio === '')
+            Errors.push("El Hora de Inicio del evento no puede qudar vacio.")
+        if(this.state.Fecha_Termino ==='')
+            Errors.push("El Fecha de Termino del evento no puede qudar vacio.")
+        if(this.state.Hora_Termino === '')
+            Errors.push("El Hora de Termino del evento no puede qudar vacio.")
+        if(this.state.Fecha_Termino<this.state.Fecha_Inicio)
+            Errors.push("El Fecha de Termino no puede ser menor a la Fecha de Inicio del evento.")
+        if(this.state.Fecha_Inicio === this.state.Fecha_Termino)
+            if(this.state.Hora_Inicio === this.state.Hora_Termino || this.state.Hora_Termino < this.state.Hora_Inicio)
+                Errors.push("Debe haber una diferencia de tiempo para poder realizar el evento.")
+        if(this.state.statusPassword === true)
+            if(this.state.Contraseña === '')
+                Errors.push("Si habilita la opcion de Contraseña esta no puede quedar vacia.")
+        if(Errors.length>0)
+        {
+            this.setState({Errors,ErrorsSummary:true})
+            return false
+        }
+            
+        else
+        {
+            this.setState({Errors,ErrorsSummary:false})
+            return true
+        }
+            
+    }
+    checkContest()
+    {
+        const {Events,Nombre_Votacion} = this.state;
+        for(let i=0;i<Events.length;i++)
+        {    var NombreR = String(Events[i].Nombre_Votacion).toUpperCase();
+            if(NombreR === Nombre_Votacion.toUpperCase())
+                return true;  
+            else
+                return false
+        }
+    }
     addContest()
     {
         if(window.confirm('¿Los datos son correctos?'))
         {
-            var contest = null;
-            fire.database().ref('Evento').child().on('value',function(sanpshot)
+            if(this.chechErrors())
             {
-                this.setState({countEvents:sanpshot.numChildren()});
-            })
-            fire.database().ref('Evento/'+this.state.Nombre_Votacion).on('value',function(snapshot){
-                /**
-                 si el contest tiene un valor y un valor con el nombre de la votacion, va a cambiar la variable
-                contest y cambiar el valor inicial de null, asi validaremos su existencia
-                */
-                contest = snapshot.exists();
-                //en caso de que el contest existe mandara un alert para indicar que el contest existe
-                if(contest !== null)
-                    window.alert("El evento ya existe");
-            })
-
-            if(contest === null)
-            {
-                fire.database().ref('Evento/' + this.state.Nombre_Votacion).set({
-                    //mandamos llamar todos los elementos del estado y los asignamos a variable para la tabla
+               fire.database().ref('Evento/'+(this.state.Events.length+1)).set({
                     Nombre_Votacion:this.state.Nombre_Votacion,
                     Carrera:this.state.Carrera,
                     Fecha_Inicio:this.state.Fecha_Inicio,
                     Hora_Inicio:this.state.Hora_Inicio,
                     Fecha_Termino:this.state.Fecha_Termino,
                     Hora_Termino:this.state.Hora_Termino,
-                    Contraseña:this.state.Contraseña,
+                    Contraseña:this.state.Contraseña
                 }).then((success)=>{
-                    //en caso de ser exitoso el registro va a mandar un aviso al usuario de que es correcto
-                    window.alert('Registro Exitoso');
+                    window.alert("Registro Exitoso")
                 }).catch((fail)=>{
-                    console.log(fail);
+                    window.alert(fail);
                 });
-            }
+            }  
         }
     }
     render()
     {
         return(
+            <>
             <div className="container text-center">
                 <div className="jumbotron">
                     <h2 className="text-primary">Registro de Evento de Votación</h2>
@@ -171,8 +237,68 @@ class AddContest extends Component
                             </tr>
                         </tbody>
                     </table>
+                    <br/>
+                    <Collapse in={this.state.ErrorsSummary}>
+                        <div className="card">
+                            <div className="card-header">
+                                <h2>Lista de Errores</h2>
+                            </div>
+                            <div className="card-body bg-danger">
+                                    <ul>
+                                        {this.state.Errors.map((Error,i)=>{
+                                            return (<li key={i}>{Error}</li>)
+                                        })}
+                                    </ul>
+                            </div>
+                        </div>
+                    </Collapse>
+                    
                 </div>
             </div>
+            <br/>
+            <div className="container text-center">
+                <div className="center jumbotron">
+                    <div className="table">
+                        <div className="row bg-dark text-light">
+                            <div className="col">
+                                <p>Nombre Votación</p>
+                            </div>
+                            <div className="col">
+                                <p>Fecha Inicio</p>
+                            </div>
+                            <div className="col">
+                                <p>Fecha Termino</p>
+                            </div>
+                            <div className="col">
+                                <p>Contraseña</p>
+                            </div>
+                            <div className="col">
+                                <p>Carrera</p>
+                            </div>
+                            <div className="col">
+                            </div>
+                        </div>
+                        <br/>
+                        {this.state.Events.map(event=>
+                        {
+                            return(
+                                <ContestRecords
+                                    key={event.Id}
+                                    Id={event.Id}
+                                    Nombre_Votacion={event.Nombre_Votacion}
+                                    Fecha_Inicio={event.Fecha_Inicio+', '+event.Hora_Inicio}
+                                    Fecha_Termino={event.Fecha_Termino+', '+event.Hora_Termino}
+                                    Contraseña={event.Contraseña}
+                                    Carrera={event.Carrera}
+                                />
+                                
+                            )
+                        })
+                        }
+                    </div>
+                </div>
+            </div>
+        </>
         );
     }
 }

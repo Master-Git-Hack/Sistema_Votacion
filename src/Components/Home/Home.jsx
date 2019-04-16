@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import NavBar from './../NavBar/NavBar';
-import {Collapse} from 'react-bootstrap'
 class Home extends Component
 {
     constructor(props)
@@ -45,7 +44,7 @@ class Home extends Component
                                 placeholder="Nombre de Identifiacion de la Votación"
                             />
                             <br/>
-                            <Collapse in={this.state.passVisibility}>
+                            {this.state.passVisibility ?
                                 <input 
                                     type="text" 
                                     onChange={this.handleChange}
@@ -53,7 +52,7 @@ class Home extends Component
                                     className="form-control"
                                     placeholder="Contraseña de acceso en caso de ser necesario para la Votación"
                                 />
-                            </Collapse>
+                            :null}
                             <br/>
                             <div className="btn-group" role="group" aria-label="Button group">
                                 <button 
@@ -61,7 +60,7 @@ class Home extends Component
                                     className="btn btn-success"
                                     name="btn_votar" 
                                     id="btn_votar"
-                                >Realizar Votación </button>
+                                >Votar</button>
                                 <div className="custom-control custom-checkbox btn btn-primary">
                                     <input type="checkbox" className="custom-control-input" onClick={this.viewPassElement} id="defaultUnchecked"/>
                                     <label className="custom-control-label" htmlFor="defaultUnchecked">Contraseña</label>
@@ -71,7 +70,7 @@ class Home extends Component
                                     className="btn btn-info"
                                     name="btn_resultados" 
                                     id="btn_resultados"
-                                >Ver Resultados</button>
+                                >Resultados</button>
                             </div>
                         </div>
                     </div>
