@@ -1,19 +1,19 @@
 self.__precacheManifest = [
   {
-    "revision": "f51e746676faa2c4c1f9",
-    "url": "/Sistema_Votacion/static/css/main.e23f9951.chunk.css"
+    "revision": "8077935830bf6771e01b",
+    "url": "/Sistema_Votacion/static/css/main.f26df7eb.chunk.css"
   },
   {
-    "revision": "f51e746676faa2c4c1f9",
-    "url": "/Sistema_Votacion/static/js/main.5b5750ae.chunk.js"
+    "revision": "8077935830bf6771e01b",
+    "url": "/Sistema_Votacion/static/js/main.6bbde5a4.chunk.js"
   },
   {
     "revision": "05efe1642ccae9f36ce2",
     "url": "/Sistema_Votacion/static/js/runtime~main.0433a759.js"
   },
   {
-    "revision": "bfa7ed8cdb079a95a0f2",
-    "url": "/Sistema_Votacion/static/js/2.2c264ec0.chunk.js"
+    "revision": "6c6e733a0655ebcb95ec",
+    "url": "/Sistema_Votacion/static/js/2.74797911.chunk.js"
   },
   {
     "revision": "febcb7fb0017eae812865754fb130b40",
@@ -28,7 +28,7 @@ self.__precacheManifest = [
     "url": "/Sistema_Votacion/static/media/gto.b9ad320f.png"
   },
   {
-    "revision": "fe718663e072395b12dd0a5c9bba75fc",
+    "revision": "8bf75a13d21adaf63d3a1f667ed303f3",
     "url": "/Sistema_Votacion/index.html"
   }
 ];
