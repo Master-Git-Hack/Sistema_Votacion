@@ -25,6 +25,7 @@ class AddStudent extends Component
             Carrera:'Ing. Sistemas Computacionales',
             Contraseña:'',
             errores:[],
+            Confirmar_Contraseña:'',
             status_errorSumary:false,
             statusView:true
         }

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-
+import fire from '../../Config/Config'
 class UpdateContest extends Component
 {
     constructor(props)
@@ -14,7 +14,8 @@ class UpdateContest extends Component
             Hora_Termino:'',
             Contraseña:''
         }
-        this.handleChange=this.handleChange.bind(this);
+        this.handleChange=this.handleChange.bind(this)
+        this.GuardarCambios=this.GuardarCambios.bind(this)
     }
     componentDidMount()
     {
@@ -28,10 +29,21 @@ class UpdateContest extends Component
             Contraseña:this.props.Contraseña
         })
     }
+    GuardarCambios(Id)
+    {
+        fire.database().ref('Evento/'+Id).update({
+            Fecha_Inicio:this.state.Fecha_Inicio,
+            Hora_Inicio:this.state.Hora_Inicio,
+            Fecha_Termino:this.state.Fecha_Termino,
+            Hora_Termino:this.state.Hora_Termino,
+            Contraseña:this.state.Contraseña
+        }).then(()=>{
+            this.props.Cerrar()
+        })
+    }
     handleChange(e)
     {
         this.setState({[e.target.name]:e.target.value})
-        console.log(this.state)
     }
     render()
     {
@@ -71,7 +83,7 @@ class UpdateContest extends Component
                 </div>
                     <div className="row">
                         <div className="col text-right">
-                            <button type="submit" className="btn btn-success">Guardar Cambios</button>
+                            <button type="submit" onClick={()=>this.GuardarCambios(this.props.Id)} className="btn btn-success">Guardar Cambios</button>
                         </div>
                     </div>
             </div>

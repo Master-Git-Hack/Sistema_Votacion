@@ -55,6 +55,7 @@ class AddContest extends Component
                 Fecha_Termino:snapshot.val().Fecha_Termino,
                 Hora_Termino:snapshot.val().Hora_Termino,
                 Contraseña:snapshot.val().Contraseña
+
             })
         })
         this.setState({Events});
@@ -116,18 +117,23 @@ class AddContest extends Component
     }
     addContest()
     {
+        
+        var id = this.state.Events.map((e=>{return (e.Id+1)}))
+        id =id.reverse().shift()
         if(window.confirm('¿Los datos son correctos?'))
         {
             if(this.chechErrors())
             {
-               fire.database().ref('Evento/'+(this.state.Events.length+1)).set({
+               fire.database().ref('Evento/'+id).set({
                     Nombre_Votacion:this.state.Nombre_Votacion,
                     Carrera:this.state.Carrera,
                     Fecha_Inicio:this.state.Fecha_Inicio,
                     Hora_Inicio:this.state.Hora_Inicio,
                     Fecha_Termino:this.state.Fecha_Termino,
                     Hora_Termino:this.state.Hora_Termino,
-                    Contraseña:this.state.Contraseña
+                    Contraseña:this.state.Contraseña,
+                    Participantes:'',
+                    Votantes:''
                 }).then((success)=>{
                     window.alert("Registro Exitoso")
                 }).catch((fail)=>{
@@ -181,13 +187,13 @@ class AddContest extends Component
                                         <div>
                                             <input 
                                                 type="date" 
-                                                className="form-control" 
+                                                className="form-control"
                                                 onChange={this.handleChange}
                                                 name="Fecha_Termino" 
                                             />
                                             <input 
                                                 type="time" 
-                                                className="form-control" 
+                                                className="form-control"
                                                 onChange={this.handleChange}
                                                 name="Hora_Termino" 
                                             />
@@ -218,7 +224,7 @@ class AddContest extends Component
                             <tr>
                                 <td className="text-right">Carrera</td>
                                 <td>
-                                    <select className="form-control" name="Carrera" onChange={this.handleChange}>
+                                    <select className="custom-select" name="Carrera" onChange={this.handleChange}>
                                         <option>General</option>
                                         <option>Ing. Sistemas Computacionales</option>
                                         <option>Ing. Industrias Alimentarias</option>
@@ -276,6 +282,7 @@ class AddContest extends Component
                                 <p>Carrera</p>
                             </div>
                             <div className="col">
+                             <h3><span className="badge badge-info">{this.state.Events.length}</span></h3>
                             </div>
                         </div>
                         <br/>

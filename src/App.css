@@ -12,7 +12,7 @@
 {
     border-radius: 35px;
 }
-.form-control
+.form-control,.custom-select
 {
     border-radius: 35px;
 }

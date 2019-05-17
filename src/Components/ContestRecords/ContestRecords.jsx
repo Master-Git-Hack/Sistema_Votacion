@@ -11,6 +11,7 @@ class ContestRecords extends Component
         {
             updateVisibility:false
         }
+        this.visibility=this.visibility.bind(this)
 
     }
 
@@ -18,6 +19,13 @@ class ContestRecords extends Component
     {
         if(window.confirm('¿Esta seguro de que quiere eliminar este registro?'))
             fire.database().ref('Evento').child(this.props.Id).remove();
+    }
+    visibility()
+    {
+        if(this.state.updateVisibility)
+            this.setState({updateVisibility:false})
+        else
+            this.setState({updateVisibility:true})
     }
     render()
     {
@@ -56,6 +64,7 @@ class ContestRecords extends Component
                                     Fecha_Termino={this.props.Fecha_Termino}
                                     Carrera={this.props.Carrera}
                                     Contraseña={this.props.Contraseña}
+                                    Cerrar={this.visibility}
                                 />
                             </Modal.Body>
                         </Modal>

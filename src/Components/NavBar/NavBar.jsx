@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
-import PopUp from 'reactjs-popup';
-import {Navbar,Nav,NavDropdown,Container} from 'react-bootstrap';
+import {Navbar,Nav,NavDropdown,Container,Modal} from 'react-bootstrap';
 import Home from './../Home/Home';
 import User from './User/User'; 
 import fire from './../../Config/Config';
@@ -10,6 +9,10 @@ class NavBar extends Component
     constructor(props)
     {
         super(props);
+        this.state=
+        {
+            userVisibility:false
+        }
     }
 
     render()
@@ -25,15 +28,13 @@ class NavBar extends Component
                         </Nav>
                         <Nav>
                             <NavDropdown title={this.props.Nombre}  id="basic-nav-dropdown"> 
+                                
                                 <Container className="text-center">
-                                    <PopUp
-                                        trigger={<button type="submit" className="btn btn-info">Información</button>}
-                                        modal
-                                        children={Close => 
-                                        <User>
-                                            <button type="submit" onClick={Close} className="btn btn-danger">Cancelar</button>
-                                        </User>}
-                                    />
+                                    <button 
+                                        type="submit" 
+                                        className="btn btn-info"
+                                        onClick={()=>this.state.userVisibility?this.setState({userVisibility:false}):this.setState({userVisibility:true})}
+                                    >Información</button>
                                     <NavDropdown.Divider />
                                     <button 
                                         type="submit" 
@@ -44,7 +45,16 @@ class NavBar extends Component
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>
-                </Navbar><br/>
+                </Navbar>
+                <br/>
+                <Modal size="lg" show={this.state.userVisibility} onHide={()=>this.setState({userVisibility:false})}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Editar Informacion de Usuario: </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <User/>
+                    </Modal.Body>
+                </Modal>
             </div>
         );
     }

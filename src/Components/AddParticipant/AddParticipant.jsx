@@ -14,8 +14,7 @@ class AddParticipant extends Component
             Participante:'',
             Carrera:'General',
             evento:'',
-            ImagePath:'',
-            Participante:'',
+            ImagePath:'Imagenes/Logo',
             alumnoVisibility:false,
             imagenDefault:false,
             Events:[],
@@ -36,12 +35,14 @@ class AddParticipant extends Component
         var formDate = new Date(eventDate)
         var nowDate = new Date();
         if(formDate.getFullYear()=== nowDate.getFullYear()-1 || formDate.getFullYear()=== nowDate.getFullYear())
-            if((formDate.getMonth()+1)<=(nowDate.getMonth()+1))
+            if((nowDate.getMonth()+1)<=(formDate.getMonth()+1))
                 if(nowDate.getDate()<(formDate.getDate()+1))
                     return true;
                 else return false;
             else return false;
         else return false;
+
+        
     }
     handleChange(e)
     {
@@ -56,15 +57,21 @@ class AddParticipant extends Component
     getRecords()
     {
         let {Records} =this.state;
-        fire.database().ref().child('Participantes').on('child_added',snapshot=>{
-            Records.push({
-                Id:snapshot.key,
-                Participante:snapshot.val().Participante,
-                Alias:snapshot.val().Alias,
-                Evento:snapshot.val().Evento
+
+        fire.database().ref().child('Evento').on('child_added',snapshot=>{
+            fire.database().ref().child('Evento/'+snapshot.key+'/Participantes').on('child_added',snap=>{
+                Records.push({
+                    EventKey:snapshot.key,
+                    Ruta:'Evento/'+snapshot.key+'/Participantes',
+                    ParticipantKey:snap.key,
+                    Evento:snapshot.val().Nombre_Votacion,
+                    Alias:snap.val().Nombre,
+                    Participante:snap.val().Participante
+                })
             })
         })
-        this.setState({Records})
+        //console.log(Records)
+        //this.setState({Records})
     }
     getEvents()
     {
@@ -88,7 +95,7 @@ class AddParticipant extends Component
                 if(Carrera === 'General' || snapshot.val().Carrera === Carrera)
                     Participants.push({
                         Numero_Control:snapshot.val().Numero_Control,
-                        Nombre:snapshot.val().Nombre,
+                        Nombre:snapshot.val().Nombre +' '+snapshot.val().Apellidos,
                         Carrera:snapshot.val().Carrera
                     })
         })
@@ -97,10 +104,14 @@ class AddParticipant extends Component
     checkRecords()
     {
         const {Records} = this.state;
-        for(let i=0;i<Records.length;i++)
-            if(this.state.evento === Records[i].Evento)
-                if(this.state.Alumno === Records[i].Participante || this.state.Participante === Records[i].Participante)
-                    return false;
+        var participant=(this.state.alumnoVisibility?this.state.Alumno.split(','):this.state.Participante);
+        for(let i=0;i<Records.length;i++) 
+           if(this.state.evento === Records[i].Evento)
+                if(participant[0] === Records[i].Participante || participant[1] === Records[i].Participante)
+                    {
+                        console.log(participant[0],participant[1],Records[i].Participante)
+                        return false;
+                    }
                 else
                     return true;
             else
@@ -109,20 +120,28 @@ class AddParticipant extends Component
     }
     addNewParticipant()
     {
-        var participant=(this.state.alumnoVisibility?this.state.Alumno:this.state.Participante);
-        if(this.checkRecords())
-       fire.database().ref('Participantes/'+(this.state.Records.length+1)).set(
-        {
-            Participante:participant,
-            Evento:this.state.evento,
-            ImagePath:this.state.ImagePath,
-            Votos:0 
-        }
-        ).then((success)=>{
-            window.alert("Nuevo participante agregado")
-        }).catch((fail)=>{
-            console.log(fail);
+        var participant=(this.state.alumnoVisibility?this.state.Alumno.split(','):this.state.Participante);
+        var event = this.state.evento.split(',')
+        let count =0
+        fire.database().ref().child('Evento/'+event[0]+'/Participantes').once('value',snapshot=>{
+            count=Number(snapshot.numChildren())+1;
         })
+           fire.database().ref('Evento/'+event[0]+'/Participantes/'+count).set({   
+               Participante:this.state.alumnoVisibility?participant[0]:this.state.Participante,
+                Nombre:this.state.alumnoVisibility?participant[1]:this.state.Participante,
+                ImagePath:this.state.ImagePath,
+                Votos:0 
+            }).then((success)=>{
+                window.alert("Nuevo participante agregado")
+            }).catch((fail)=>{
+                console.log(fail);
+            })
+        if(Boolean(this.checkRecords()))
+        {
+            
+        }
+        
+            
     }
     handleUploadChange(e)
     {
@@ -131,7 +150,8 @@ class AddParticipant extends Component
             [e.target.name]:file.name,
             ImagePath:'Imagenes/'+(this.state.alumnoVisibility ? this.state.Alumno : this.state.Participante)
         });
-        const storageRef = fire.storage().ref('Imagenes/'+(this.state.alumnoVisibility ? this.state.Alumno : this.state.Participante));
+        var ext =this.state.valueFile.split('.')
+        const storageRef = fire.storage().ref('Imagenes/'+(this.state.alumnoVisibility ? this.state.Alumno : this.state.Participante)+'.'+ext[1]);
         const task = storageRef.put(file);
         task.on('state_changed',snapshot=>{
             let percentage =(snapshot.bytesTransferred/snapshot.totalBytes)*100;
@@ -156,10 +176,10 @@ class AddParticipant extends Component
                                     Referencia de Votación
                                 </div>
                                 <div className="col-9">
-                                    <select className="form-control" name="evento" onClick={this.handleChange} id="">
+                                    <select className="custom-select" name="evento" onClick={this.handleChange} id="">
                                         {this.state.Events.map(Event=>{
                                             return(
-                                                <option key={Event.key} value={Event.Nombre_Votacion}>{Event.Nombre_Votacion} - ({Event.Carrera})</option>
+                                                <option key={Event.key} value={(Event.key)+','+(Event.Nombre_Votacion)}>{Event.Nombre_Votacion} - ({Event.Carrera})</option>
                                             )
                                         })}
                                         
@@ -169,7 +189,7 @@ class AddParticipant extends Component
                             <br/>
                             <div className="row">
                                 <div className="col-3 text-right">
-                                <div className="custom-control custom-checkbox">
+                                    <div className="custom-control custom-checkbox">
                                             <input 
                                                 type="checkbox" 
                                                 name=""
@@ -186,18 +206,18 @@ class AddParticipant extends Component
                                 <div className="col-9">
                                     {this.state.alumnoVisibility ?
                                     <>
-                                    <select className="form-control" onChange={this.handleChange} onClick={this.getStudents} name="Carrera">
+                                    <select className="custom-select" onChange={this.handleChange} onClick={this.getStudents} name="Carrera">
                                         <option value="General">General</option>
                                         <option value="Ing. Sistemas Computacionales">Ing. Sistemas Computacionales</option>
                                         <option value="Ing. Industrias Alimentarias">Ing. Industrias Alimentarias</option>
                                         <option value="Ing. Mecatronica">Ing. Mecatronica</option>
                                         <option value="Ing. Industrial">Ing. Industrial</option>
                                     </select>
-                                    <select className="form-control"  onClick={this.handleChange} name="Alumno">
+                                    <select className="custom-select"  onClick={this.handleChange} name="Alumno">
                                         {this.state.Participants.map(Student =>{
                                             
                                             return(
-                                                <option value={Student.Numero_Control} key={Student.Numero_Control}>({Student.Carrera}) - {Student.Numero_Control} - "{Student.Nombre}"</option>
+                                                <option value={(Student.Numero_Control+','+ Student.Nombre)} key={Student.Numero_Control}>({Student.Carrera}) - {Student.Numero_Control} - "{Student.Nombre}"</option>
                                             )
                                         })
                                         }
@@ -256,21 +276,28 @@ class AddParticipant extends Component
                 <div className="center jumbotron">
                     <div className="table">
                         <div className="row bg-dark text-light">
-                            <div className="col-4">
+                            <div className="col-3">
                                 Participante
                             </div>
-                            <div className="col-4">
+                            <div className="col-3">
+                                Alias
+                            </div>
+                            <div className="col-3">
                                 Evento
                             </div>
-                            <div className="col-4">
+                            <div className="col-3">
+                               <h3> <span className="badge badge-info">{this.state.Records.length}</span></h3>
                             </div>
                         </div>
                         <br/>
                         {this.state.Records.map(Record=>{
                             return (
                                 <ParticipantsRecords
-                                    key={Record.Id}
-                                    Id={Record.Id}
+                                    key={Record.ParticipantKey}
+                                    participantId={Record.ParticipantKey}
+                                    Ruta={Record.Ruta}
+                                    eventKey={Record.EventKey}
+                                    Alias={Record.Alias}
                                     Participante={Record.Participante}
                                     Evento={Record.Evento}
                                 />
