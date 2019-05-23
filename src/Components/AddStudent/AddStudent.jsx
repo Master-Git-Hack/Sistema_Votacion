@@ -94,7 +94,8 @@ class AddStudent extends Component
             {
                 //comprobamos que las contraseñas sean similares
                 if(this.state.Contraseña === this.state.Confirmar_Contraseña)
-                return true;
+                    return true;
+                else return false
             }
         else    
             return false;
@@ -121,6 +122,8 @@ class AddStudent extends Component
             if(String(this.state.Apellidos) === '')
                 listErrors.push('Los apellidos no pueden estar vacios');
 
+            if(this.state.Contraseña.length<8 || this.state.Confirmar_Contraseña.length<8)
+                listErrors.push('La contraseña debe de tener un minimo de 8 caracacteres')
             if(this.checkPasswords() === false)
                 listErrors.push('Las constraseñas deben coincidir');
             //verificamos el tamaño del arreglo para los errores

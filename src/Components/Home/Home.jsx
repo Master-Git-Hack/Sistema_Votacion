@@ -40,14 +40,35 @@ class Home extends Component
         if(Fecha_Origen.getFullYear()=== Momento.getFullYear()-1 && Fecha_Finalizacion.getFullYear()===Momento.getFullYear()-1 || Fecha_Origen.getFullYear() === Momento.getFullYear() && Fecha_Finalizacion.getFullYear()===Momento.getFullYear())
             if((Momento.getMonth()+1)<=(Fecha_Origen.getMonth()+1) && (Momento.getMonth()+1)<=(Fecha_Finalizacion.getMonth()+1))
                 if(Momento.getDate()>=(Fecha_Origen.getDate()+1) && Momento.getDate()<=(Fecha_Finalizacion.getDate()+1))
-                    if(Momento.getHours()>=parseInt(Hora_Origen[0]) && Momento.getHours()<=parseInt(Hora_Finalizacion[0]))
+                {
+                    if(Momento.getDate() === Fecha_Origen.getDate()+1)
+                    {
+                        if(Momento.getHours() === parseInt(Hora_Origen[0]))
+                            if(Momento.getMinutes() >= parseInt(Hora_Origen[1]))
+                                return true
+                            else
+                                return false
+                        if(Momento.getHours() > parseInt(Hora_Origen[0]))
+                            return true  
+                    }
+                    if(Momento.getDate() > Fecha_Origen.getDate()+1 && Momento.getDate() < Fecha_Finalizacion.getDate()+1)
                         return true
-                    else return false
+                    if(Momento.getDate() === Fecha_Finalizacion.getDate()+1)
+                    {
+                        if(Momento.getHours() < parseInt(Hora_Finalizacion[0]))
+                            return true
+                        if(Momento.getHours() === parseInt(Hora_Finalizacion[0]))
+                            if(Momento.getMinutes() < parseInt(Hora_Finalizacion[1]))
+                                return true
+                            else
+                                return false
+                    }
+                    
+                        
+                }
                 else return false;
             else return false;
         else return false;
-
-        
     }
 
     handleChange(e)
@@ -125,8 +146,7 @@ class Home extends Component
         fire.database().ref().child('Evento').on('child_added',snapshot=>{
             if(snapshot.val().Carrera === carrera || snapshot.val().Carrera==='General')
                 if(snapshot.val().Nombre_Votacion === EventoVotacion && snapshot.val().Contraseña === EventoPass)
-                    {console.log(this.compareDate(snapshot.val().Fecha_Inicio,snapshot.val().Hora_Inicio, snapshot.val().Fecha_Termino, snapshot.val().Hora_Termino))
-                        if(this.compareDate(snapshot.val().Fecha_Inicio,snapshot.val().Hora_Inicio, snapshot.val().Fecha_Termino, snapshot.val().Hora_Termino))
+                    if(this.compareDate(snapshot.val().Fecha_Inicio,snapshot.val().Hora_Inicio, snapshot.val().Fecha_Termino, snapshot.val().Hora_Termino))
                         fire.database().ref().child('Evento/'+snapshot.key+'/Votantes/'+user).once('value',snap=>{
                             if(snap.hasChildren())
                                 window.alert("Votacion ya realizada!!!!")
@@ -139,16 +159,16 @@ class Home extends Component
                                         Nombre:snap.val().Nombre,
                                         Participante:snap.val().Participante,
                                         ImagePath:snap.val().ImagePath                        
-                                        })
+                                    })
                                 })
-                        })}
+                        })
                     
         })
             this.setState({Participantes,showModal:true})   
     }
     render()
     {
-        
+        const {Participantes,Resultados}=this.state
         return(
             <>
                 <div className="container text-center">
@@ -196,33 +216,42 @@ class Home extends Component
                             </div>
                             <Modal show={this.state.showModal} size="xl" onHide={()=>this.setState({showModal:false})}>
                                 <Modal.Header closeButton />
-                                    
-                                
                                 <Modal.Body>
-                                    <p>Si tarda en aparecer la lista, favor de presionar el siguiente botón.
-                                        <button 
-                                            className="btn btn-info"
-                                            onClick={()=>{
-                                            this.setState({showModal:false}) 
-                                            this.setState({showModal:true})}}>=></button>
-                                    </p>
-                                    <ul>
-                                        {
-                                           this.state.Participantes.map((participante)=>{
-                                                return (
-                                                    <Voting
-                                                        key={participante.Id}
-                                                        Id={participante.Id}
-                                                        Participante={participante.Participante}
-                                                        Nombre={participante.Nombre}
-                                                        ImagePath={participante.ImagePath}
-                                                        Ruta_Votante={participante.Ruta_Votante}
-                                                        Ruta_Participante={participante.Ruta_Participante}
-                                                        Votar={this.votacion}
-                                                    />);
-                                            })
-                                        }
-                                    </ul>
+                                    
+                                    {Participantes.length>0 ?
+                                    
+                                        <ul>
+                                            {
+                                            this.state.Participantes.map((participante)=>{
+                                                    return (
+                                                        <Voting
+                                                            key={participante.Id}
+                                                            Id={participante.Id}
+                                                            Participante={participante.Participante}
+                                                            Nombre={participante.Nombre}
+                                                            ImagePath={participante.ImagePath}
+                                                            Ruta_Votante={participante.Ruta_Votante}
+                                                            Ruta_Participante={participante.Ruta_Participante}
+                                                            Votar={this.votacion}
+                                                        />);
+                                                })
+                                            }
+                                        </ul>
+                                        :
+                                        <div>
+                                            <p>Si tarda en aparecer la lista, favor de presionar el siguiente botón.
+                                                <button 
+                                                className="btn btn-info"
+                                                onClick={()=>{
+                                                this.setState({showModal:false}) 
+                                                this.setState({showModal:true})}}>=></button>
+                                            </p>
+                                            <br/>
+                                            <p>
+                                                Por el momento no puedes ver la lista de votación.
+                                            </p>
+                                        </div>
+                                    }
                                 </Modal.Body>
                             </Modal>
                         </div>
@@ -231,14 +260,22 @@ class Home extends Component
                                 <Modal.Header closeButton />
 
                                 <Modal.Body>
-                                    <p>Si tarda en aparecer la lista, favor de presionar el siguiente botón.
-                                        <button 
+                                    {
+                                        Resultados.length>0?
+                                            <Results Resultados={Resultados}/>
+                                        :
+                                        <p>
+                                            Si tarda en aparecer la lista, favor de presionar el siguiente botón.
+                                            <button 
                                             className="btn btn-info"
                                             onClick={()=>{
                                                 this.setState({showModalR:false}) 
-                                                this.setState({showModalR:true})}}>=></button>
-                                    </p>
-                                    <Results Resultados={this.state.Resultados}/>
+                                                this.setState({showModalR:true})}}
+                                            >=></button>
+                                        </p>
+                                    }
+                                    
+                                    
                                 </Modal.Body>
                             </Modal>
                     
