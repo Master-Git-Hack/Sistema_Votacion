@@ -37,7 +37,7 @@ class NavBar extends Component
                                         onClick={()=>this.state.userVisibility?this.setState({userVisibility:false}):this.setState({userVisibility:true})}
                                     >Información</button>
                                     <NavDropdown.Divider />
-                                    <a download={apk} href="#apk">Descargar Aplicación</a>
+                                    <a download='https://drive.google.com/file/d/1ZClOmO48xUukR1tUywrw3YmkyMUAOiY5/view' href="#apk">Descargar Aplicación</a>
                                     <NavDropdown.Divider />
                                     <button 
                                         type="submit" 
