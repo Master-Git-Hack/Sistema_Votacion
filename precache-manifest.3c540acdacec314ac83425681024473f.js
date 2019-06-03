@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "11db4a0b6b0b0e3641f3",
+    "revision": "2cd8d319d02c780bc7c2",
     "url": "/Sistema_Votacion/static/css/main.f26df7eb.chunk.css"
   },
   {
-    "revision": "11db4a0b6b0b0e3641f3",
-    "url": "/Sistema_Votacion/static/js/main.51ab9e74.chunk.js"
+    "revision": "2cd8d319d02c780bc7c2",
+    "url": "/Sistema_Votacion/static/js/main.91b89804.chunk.js"
   },
   {
     "revision": "05efe1642ccae9f36ce2",
@@ -32,7 +32,7 @@ self.__precacheManifest = [
     "url": "/Sistema_Votacion/static/media/Sistema_Votacion_ITESG.425c3350.apk"
   },
   {
-    "revision": "f60a4ef936709d2aacfd5e57aacba326",
+    "revision": "050fe9272e68eceb709c36cd94929d92",
     "url": "/Sistema_Votacion/index.html"
   }
 ];
